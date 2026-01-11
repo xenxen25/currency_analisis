@@ -15,12 +15,18 @@
 ### 1. Установка
 ```bash
 # Клонируйте репозиторий
-git clone https://github.com/ваш_логин/finance-tracker.git
+git clone https://github.com/xenxen25/finance-tracker.git
+```
+```bash
+# Перейдите в папку проекта
 cd finance-tracker
-
-# Создайте виртуальное окружение
+```
+```bash
+# Создайте и перейдите в виртуальное окружение
 python -m venv venv
 source venv/bin/activate  # На Windows: venv\Scripts\activate
-
-# Установите зависимости
+```
+```bash
+# Установите зависимости(может занять время)
 pip install -r requirements.txt
+```
