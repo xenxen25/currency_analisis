@@ -37,7 +37,7 @@ print("="*60)
 print(f"📅 {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 print()
 
-# API для курсов валют (ЦБ РФ)
+# API для курсов валют (сайт ЦБ РФ)
 API_URL = "https://www.cbr-xml-daily.ru/daily_json.js"
 
 def get_exchange_rates():
@@ -58,7 +58,6 @@ def analyze_currencies(data, selected_currencies=None):
         print("❌ Нет данных о валютах")
         return None
     
-    # Если не указаны валюты - используем топ-5 по умолчанию
     if selected_currencies is None:
         selected_currencies = ['USD', 'EUR', 'CNY', 'GBP', 'JPY']
     
@@ -73,11 +72,11 @@ def analyze_currencies(data, selected_currencies=None):
             currency = data['Valute'][code]
             available_count += 1
             
-            # Рассчитываем изменение
+
             change = currency['Value'] - currency['Previous']
             change_percent = (change / currency['Previous']) * 100 if currency['Previous'] != 0 else 0
             
-            # Рекомендация
+
             if change > 0.01:  # Значительный рост
                 recommendation = "📈 СИЛЬНЫЙ РОСТ - ОЧЕНЬ выгодно продавать"
             elif change > 0:
@@ -101,7 +100,6 @@ def analyze_currencies(data, selected_currencies=None):
             
             currencies.append(currency_info)
             
-            # Выводим в консоль
             print(f"{code} ({currency['Name']}):")
             print(f"  Курс: {currency['Value']:.4f} ₽ за {currency['Nominal']} ед.")
             print(f"  Изменение: {change:+.4f} ₽ ({change_percent:+.2f}%)")
@@ -122,7 +120,7 @@ def save_to_csv(currencies, filename="currency_rates.csv"):
     df.to_csv(filename, index=False, encoding='utf-8-sig')
     print(f"💾 Данные сохранены в {filename}")
     
-    # Также сохраняем в JSON
+
     df.to_json("currency_rates.json", orient='records', force_ascii=False, indent=2)
     print("💾 Данные также сохранены в currency_rates.json")
     
@@ -133,7 +131,7 @@ def generate_report(df):
     print("\n📈 АНАЛИТИЧЕСКИЙ ОТЧЁТ:")
     print("-" * 50)
     
-    # Самая выгодная валюта для покупки (самое большое падение)
+
     best_to_buy = df[df['Изменение'] < 0].sort_values('Изменение').head(1)
     if not best_to_buy.empty:
         currency = best_to_buy.iloc[0]
@@ -144,7 +142,6 @@ def generate_report(df):
     
     print()
     
-    # Самая выгодная валюта для продажи (самый большой рост)
     best_to_sell = df[df['Изменение'] > 0].sort_values('Изменение', ascending=False).head(1)
     if not best_to_sell.empty:
         currency = best_to_sell.iloc[0]
@@ -155,13 +152,11 @@ def generate_report(df):
     
     print()
     
-    # Общая статистика
     print("📊 ОБЩАЯ СТАТИСТИКА:")
     print(f"   • Средний курс доллара: {df[df['Код'] == 'USD']['Курс'].values[0]} ₽")
     print(f"   • Средний курс евро: {df[df['Код'] == 'EUR']['Курс'].values[0]} ₽")
     print(f"   • Всего отслеживаемых валют: {len(df)}")
     
-    # Сохраняем отчёт в файл
     report_text = f"""
     ОТЧЁТ ПО КУРСАМ ВАЛЮТ
     ======================
@@ -183,14 +178,13 @@ def generate_report(df):
     print("📄 Подробный отчёт сохранён в currency_report.txt")
 
 def main():
-    """Основная функция"""
+    """Основная деф проекта"""
     print("="*60)
     print("💰 РАСШИРЕННЫЙ АНАЛИЗАТОР КУРСОВ ВАЛЮТ")
     print("="*60)
     print(f"📅 {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print()
     
-    # Показываем доступные валюты
     print("🌍 ДОСТУПНЫЕ ВАЛЮТЫ ДЛЯ АНАЛИЗА:")
     print("-" * 40)
     for i, (code, name) in enumerate(list(ALL_CURRENCIES.items())[:15], 1):
@@ -198,11 +192,10 @@ def main():
     print(f"... и ещё {len(ALL_CURRENCIES)-15} валют")
     print()
     
-    # Выбор режима анализа
     print("🎯 ВЫБЕРИТЕ РЕЖИМ АНАЛИЗА:")
     print("1. Быстрый анализ (5 основных валют)")
     print("2. Расширенный анализ (10 популярных валют)")
-    print("3. Полный анализ (все доступные валюты)")
+    print("3. Полный анализ (все доступные валюты(20))")
     print("4. Выбрать валюты вручную")
     
     try:
@@ -233,25 +226,21 @@ def main():
     
     print("\n🚀 Запуск анализа...")
     
-    # 1. Получаем данные
     data = get_exchange_rates()
     
     if not data:
         print("❌ Не удалось получить данные. Проверьте подключение к интернету.")
         return
     
-    # 2. Анализируем выбранные валюты
     currencies = analyze_currencies(data, selected)
     
     if not currencies:
         print("❌ Не удалось проанализировать данные")
         return
     
-    # 3. Сохраняем
     filename = f"currency_rates_{len(selected)}_currencies.csv"
     df = save_to_csv(currencies, filename)
     
-    # 4. Генерируем отчёт
     generate_report(df)
     
     print("\n" + "="*60)
