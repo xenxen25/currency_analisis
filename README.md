@@ -27,7 +27,7 @@ python -m venv venv
 source venv/bin/activate  # На Windows: venv\Scripts\activate
 ```
 ```bash
-# Установите зависимости(может занять время)
+# Запусти
 pip install -r requirements.txt
 ```
 ```bash
