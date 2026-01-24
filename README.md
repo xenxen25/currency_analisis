@@ -15,7 +15,7 @@
 ### 1. Установка
 ```bash
 # Клонируйте репозиторий
-git clone https://github.com/xenxen25/finance-tracker.git
+git clone https://github.com/xenxen25/currency_analisis.git
 ```
 ```bash
 # Перейдите в папку проекта
