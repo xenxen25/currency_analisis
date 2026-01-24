@@ -30,3 +30,7 @@ source venv/bin/activate  # На Windows: venv\Scripts\activate
 # Установите зависимости(может занять время)
 pip install -r requirements.txt
 ```
+```bash
+# Установите зависимости(может занять время)
+python currency_analyzer.py
+```
