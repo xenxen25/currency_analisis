@@ -19,7 +19,7 @@ git clone https://github.com/xenxen25/currency_analisis.git
 ```
 ```bash
 # Перейдите в папку проекта
-cd finance-tracker
+cd currency-analisis
 ```
 ```bash
 # Создайте и перейдите в виртуальное окружение
